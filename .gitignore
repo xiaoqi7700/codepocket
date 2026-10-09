@@ -1,0 +1,15 @@
+.local/
+.case/
+node_modules/
+.DS_Store
+
+# Never publish local credentials, logs or runtime files
+.env
+.env.*
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+outputs/
+coverage/

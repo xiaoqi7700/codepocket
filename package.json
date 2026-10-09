@@ -1,0 +1,20 @@
+{
+  "name": "codepocket",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Private mobile web panel for local Codex on macOS",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check server.mjs && node --check public/app.js && node --check lib/codex.mjs && node --check lib/auth.mjs && node --check lib/writer.mjs",
+    "open": "node scripts/control.mjs open",
+    "stop": "node scripts/control.mjs stop"
+  },
+  "dependencies": {
+    "ws": "8.22.0"
+  }
+}

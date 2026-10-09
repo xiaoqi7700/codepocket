@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f4ef"><meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Codex Pocket">
+  <title>Codex Pocket · 我的电脑，随身可用</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <section id="auth-view" class="auth-view">
+    <div class="auth-card"><div class="logo-mark">&gt;_</div><span class="eyebrow">YOUR MAC. ANYWHERE.</span>
+      <h1>Codex，装进口袋。</h1><p class="muted">手机负责发出指令。你的电脑继续完成工作。</p>
+      <form id="login-form"><label>设备名称<input id="device-label" placeholder="例如：我的 iPhone" maxlength="80" autocomplete="nickname" required></label>
+        <label>面板登录密码<input id="password" type="password" autocomplete="current-password" placeholder="电脑面板提供的连接密码" required></label>
+        <button class="primary" type="submit">连接我的电脑 <span>↗</span></button><p id="auth-error" class="error" role="alert"></p>
+      </form>
+      <div id="waiting" hidden><div class="waiting-dot"></div><h2>还差电脑上的一次确认</h2><p class="muted">在 Mac 面板打开「设备管理」，批准这台手机。此页会自动进入。</p><button id="cancel-wait" class="secondary">取消连接</button></div>
+      <div class="auth-foot"><span class="tiny-dot"></span>私有面板 · 新设备须电脑批准</div>
+      <p id="local-login-help" class="small muted" hidden>本机登录链接由「打开面板.command」提供；密码保存在应用的 .local/access.txt。</p>
+    </div>
+  </section>
+  <div id="app" class="app" hidden>
+    <button id="drawer-backdrop" class="drawer-backdrop" aria-label="关闭侧栏" hidden></button>
+    <aside id="sidebar" class="sidebar">
+      <div class="brand"><div class="logo-mark small-mark">&gt;_</div><button id="home" class="brand-home" aria-label="返回工作空间"><strong>Codex Pocket</strong><span>本地执行，随身掌控</span></button><button id="close-drawer" class="icon-button mobile-only" aria-label="关闭侧栏">×</button></div>
+      <button id="new-thread" class="new-thread">＋ 新建会话 <span>↗</span></button>
+      <div class="section-label">工作空间<button id="add-project" class="text-button owner-only" title="添加项目" hidden>＋</button></div>
+      <label class="sr-only" for="project-select">选择项目</label><select id="project-select"><option value="">所有项目</option></select>
+      <label class="search"><span>⌕</span><input id="thread-search" type="search" placeholder="搜索会话…" aria-label="搜索会话"></label>
+      <div class="section-label">最近会话<button id="refresh" class="text-button" title="刷新会话">↻</button></div>
+      <nav id="thread-list" class="thread-list" aria-label="会话列表"></nav><button id="more-threads" class="text-button load-more" hidden>更多会话</button>
+      <div class="sidebar-bottom"><button id="connect-phone" class="sidebar-action owner-only" hidden>↗ 连接手机</button><button id="devices" class="sidebar-action owner-only" hidden>◇ 设备管理 <span id="pending-count"></span></button><button id="logout" class="sidebar-action muted">↪ 退出这台设备</button>
+        <div class="host-card"><span id="connection-dot" class="tiny-dot"></span><div><strong id="connection-label">连接中</strong><span id="model-label">读取本机配置…</span></div></div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button id="open-drawer" class="icon-button mobile-only" aria-label="打开项目和会话">☰</button><div class="breadcrumb"><span id="project-title">我的工作空间</span><span class="slash">/</span><strong id="thread-title">开始一段新工作</strong></div><div class="top-actions"><button id="files" class="secondary compact" title="查看项目文件">文件</button><span id="run-status" class="status-pill">就绪</span></div></header>
+      <div id="thread-meta" class="thread-meta" hidden></div>
+      <div id="messages" class="messages" aria-live="polite"><section class="welcome"><span class="eyebrow">LOCAL POWER, MOBILE FREEDOM</span><h1>把电脑留在桌上。<br><span>把工作带在身边。</span></h1><p>选择左侧会话，查看进度、继续提问。<br>模型与中转保持原样，所有工作都在你的 Mac 上执行。</p><div class="welcome-grid"><div><span>01 / CONTINUE</span><h3>接着上次的思路</h3><p>原有项目与会话，无需搬家。</p></div><div><span>02 / CONTROL</span><h3>指令，随时发出</h3><p>流式回复、命令输出与修改记录。</p></div><div><span>03 / PRIVATE</span><h3>只有自己的设备</h3><p>面板认证与电脑端设备批准。</p></div></div><div class="welcome-note"><span class="tiny-dot"></span>手机是控制端，电脑是执行端。</div></section></div>
+      <div id="approvals" class="approvals" hidden></div>
+      <section id="writer-warning" class="writer-warning" hidden aria-live="polite"></section>
+      <footer class="composer-area"><div class="composer-options"><label>执行权限 <select id="sandbox" aria-label="执行权限"><option value="workspace-write">项目内读写</option><option value="read-only">只读</option><option value="danger-full-access">完整访问</option></select></label><button id="older-history" class="text-button" hidden>加载更早消息</button><button id="release-writer" class="text-button" hidden>交回桌面</button><button id="stop" class="text-button danger" hidden>■ 停止任务</button></div>
+        <form id="composer" class="composer"><label for="message-input" class="sr-only">给 Codex 发送指令</label><textarea id="message-input" placeholder="告诉 Codex 接下来做什么…" rows="2" maxlength="40000" disabled></textarea><button id="send" class="send" type="submit" aria-label="发送指令" disabled>↑</button></form>
+        <div class="composer-foot"><span>使用本机模型配置 · 不向手机暴露 API Key</span><span>请避免桌面与网页同时执行同一会话</span></div></footer>
+    </main>
+  </div>
+  <dialog id="modal"><div class="modal-heading"><h2 id="modal-title"></h2><button id="modal-close" class="icon-button" aria-label="关闭弹窗">×</button></div><div id="modal-content"></div></dialog>
+  <div id="toast" class="toast" hidden role="status"></div>
+</body>
+</html>
